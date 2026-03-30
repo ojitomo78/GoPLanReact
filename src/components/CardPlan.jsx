@@ -6,37 +6,36 @@ const CardPlan = ({ titulo, descripcion, precio, imagen, categoria }) => {
   const cardVariants = {
     hidden: { 
       opacity: 0, 
-      y: 20 // Empieza un poco más abajo
+      y: 20 
     },
     visible: { 
       opacity: 1, 
-      y: 0, // Sube a su posición original
+      y: 0, 
       transition: { 
-        duration: 0.5, // Tarda medio segundo
+        duration: 0.5, 
         ease: "easeOut" 
       }
     }
   };
 
   return (
-    // 3. Cambiamos <div> por <motion.div> y le pasamos la animación
     <motion.div 
       className="plan-card"
       variants={cardVariants}
-      initial="hidden" // Estado inicial
-      animate="visible" // Estado al animarse
+      initial="hidden" 
+      animate="visible" 
       whileHover={{ 
-        scale: 1.05, // Pequeño zoom al pasar el mouse
-        boxShadow: "0px 10px 20px rgba(0,0,0,0.2)" // Sombra más fuerte
+        scale: 1.05, 
+        boxShadow: "0px 10px 20px rgba(0,0,0,0.2)" 
       }}
     >
       {imagen && <img src={imagen} alt={titulo} className="plan-img" />}
       
-      {/* 4. Animación suave para el título */}
+      {}
       <motion.h2
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }} // Un pequeño retraso
+        transition={{ delay: 0.3 }} 
       >
         {titulo}
       </motion.h2>

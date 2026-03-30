@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // No olvides este import arriba
-
-// ... dentro del return:
-<p className="login-options">
-  ¿No tienes cuenta? 
-  <Link to="/registro-usuario" className="btn-secundario">Regístrate</Link>
-</p>
+import { Link } from 'react-router-dom'; 
 
 const Login = () => {
   // Inicializamos los estados
@@ -52,4 +46,4 @@ const Login = () => {
   );
 };
 
-export default Login; // <-- Revisa que esta línea esté al final
+export default Login; 

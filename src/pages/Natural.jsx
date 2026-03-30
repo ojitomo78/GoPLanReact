@@ -4,7 +4,7 @@ import CardPlan from '../components/CardPlan';
 const Natural = () => {
   return (
     <main>
-      {/* Título centrado con la clase de tu CSS */}
+      {}
       <h2 className="categoria-titulo">Planes Naturales</h2>
 
       <section className="planes-container">

@@ -4,7 +4,7 @@ import CardPlan from '../components/CardPlan';
 const Cultural = () => {
   return (
     <main>
-      {/* Título centrado con la clase que ajustamos en el CSS */}
+      {}
       <h2 className="categoria-titulo">Planes Culturales</h2>
 
       <section className="planes-container">

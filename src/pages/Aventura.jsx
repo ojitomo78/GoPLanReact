@@ -1,11 +1,10 @@
-// src/pages/Aventura.jsx
 import React from 'react';
 import CardPlan from '../components/CardPlan';
 
 const Aventura = () => {
   return (
     <main>
-      {/* Asegúrate de que diga className="categoria-titulo" */}
+      {}
       <h2 className="categoria-titulo">Planes de Aventura</h2>
       
       <section className="planes-container">

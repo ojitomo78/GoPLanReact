@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Registro = () => {
-  // Usamos un solo objeto para todos los campos del formulario
+  
   const [formData, setFormData] = useState({
     nombre: '',
     documento: '',
@@ -10,7 +10,7 @@ const Registro = () => {
     direccion: ''
   });
 
-  // Función única para manejar todos los cambios en los inputs
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({

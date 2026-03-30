@@ -9,7 +9,7 @@ const PlanesDestinos = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15, // <--- LA MAGIA: Espera 0.15s entre cada hijo
+        staggerChildren: 0.15, 
       }
     }
   };

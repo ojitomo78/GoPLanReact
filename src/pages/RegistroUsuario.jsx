@@ -6,7 +6,6 @@ const RegistroUsuario = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // Aquí iría la lógica para guardar el nuevo usuario en tu DB
     console.log("Nuevo usuario creado:", { usuario, password });
     alert(`¡Cuenta creada para ${usuario}! Ahora puedes iniciar sesión.`);
   };
