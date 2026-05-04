@@ -5,7 +5,6 @@ const cors = require("cors");
 const path = require("path");
 
 // 1. IMPORTAR TODAS LAS RUTAS
-// Asegúrate de que las mayúsculas en "./Route/..." coincidan con tus carpetas reales
 const userRoutes = require("./Route/user.js");
 const loginRoutes = require("./Route/login.js");
 const planRoutes = require("./Route/plan.js");
@@ -18,19 +17,16 @@ const MONGO_URI = process.env.MONGO_URI;
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // --- MIDDLEWARES ---
-
 app.use(express.json());
 
-// Configuración de CORS robusta
+// Configuración de CORS
 const allowedOrigins = [
   "http://localhost:5173",
   FRONTEND_URL
-].filter(Boolean); // Elimina valores nulos o indefinidos
+].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    // permitir peticiones sin origen (como apps móviles o curl) 
-    // o si el origen está en la lista blanca
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -42,11 +38,7 @@ app.use(cors({
   credentials: true
 }));
 
-// --- SERVIR FRONTEND (ARCHIVOS ESTÁTICOS) ---
-// Importante: Esto debe ir ANTES de las rutas comodín (*)
-app.use(express.static(path.join(__dirname, "public")));
-
-// --- RUTAS DE LA API ---
+// --- 2. RUTAS DE LA API (Deben ir antes de los archivos estáticos) ---
 app.use("/api/login", loginRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/planes", planRoutes);
@@ -59,26 +51,32 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// --- MANEJO DE REACT ROUTER ---
-// Esta ruta debe ser la ÚLTIMA. Si no es una ruta de API, sirve el index.html
+// --- 3. SERVIR FRONTEND (ARCHIVOS ESTÁTICOS) ---
+// path.join(__dirname, "public") asume que tu carpeta de build está en el mismo nivel que index.js
+const carpetaBuild = path.join(__dirname, "public");
+app.use(express.static(carpetaBuild));
+
+// --- 4. MANEJO DE REACT ROUTER (EL COMODÍN) ---
+// Si la petición NO empieza por /api, entregamos el index.html para que React maneje la ruta
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"), (err) => {
-    if (err) {
-      res.status(500).send("Error cargando el frontend. ¿Olvidaste hacer el build?");
-    }
-  });
+  if (!req.url.startsWith('/api')) {
+    res.sendFile(path.join(carpetaBuild, "index.html"), (err) => {
+      if (err) {
+        res.status(500).send("Error cargando el frontend. Revisa que la carpeta 'public' exista.");
+      }
+    });
+  }
 });
 
 // --- CONEXIÓN A BASE DE DATOS ---
 if (!MONGO_URI) {
-  console.error("❌ ERROR: La variable MONGO_URI no está definida en Railway.");
-  process.exit(1); // Detiene el proceso si no hay base de datos
+  console.error("❌ ERROR: La variable MONGO_URI no está definida.");
+  process.exit(1);
 }
 
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log("✅ Conexión exitosa a la base de datos");
-    // Solo iniciamos el servidor si la base de datos conecta
     app.listen(PORT, () => {
       console.log(`🚀 Servidor corriendo en puerto: ${PORT}`);
     });
