@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Añadimos useNavigate para redirigir tras registrarse
 import Swal from 'sweetalert2';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Registro = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -18,7 +20,7 @@ const Registro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/users/registro', {
+      const response = await fetch('${API_URL}/api/users/registro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

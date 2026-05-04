@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import CardPlan from '../components/CardPlan';
 import { Link } from 'react-router-dom';
 import { useItinerario } from '../hooks/useItinerario';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const Urbano = () => {
+const Cultural = () => {
   const [planes, setPlanes] = useState([]);
   const { agregarAlItinerario } = useItinerario();
 
   useEffect(() => {
-    // Pedimos los planes de la categoría Urbano
-    fetch('http://localhost:5000/api/planes/categoria/Urbano')
+    // Pedimos los planes filtrados por categoría Cultural
+    fetch('${API_URL}/api/planes/categoria/Cultural')
       .then(res => res.json())
       .then(data => setPlanes(data))
-      .catch(err => console.error("Error cargando planes urbanos:", err));
+      .catch(err => console.error("Error cargando planes culturales:", err));
   }, []);
 
   return (
     <main>
-      <h2 className="categoria-titulo">Planes Urbanos</h2>
+      <h2 className="categoria-titulo">Planes Culturales</h2>
 
       <section className="planes-container">
         {planes.length > 0 ? (
@@ -32,7 +33,7 @@ const Urbano = () => {
             />
           ))
         ) : (
-          <p className="text-center">Explorando la ciudad...</p>
+          <p className="text-center">Cargando la historia del mundo...</p>
         )}
       </section>
 
@@ -43,4 +44,4 @@ const Urbano = () => {
   );
 };
 
-export default Urbano;
+export default Cultural;

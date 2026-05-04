@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import CardPlan from '../components/CardPlan';
 import { Link } from 'react-router-dom';
-import { useItinerario } from '../hooks/useItinerario';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const Aventura = () => {
+const Natural = () => {
   const [planes, setPlanes] = useState([]);
-  const { agregarAlItinerario } = useItinerario();
 
   useEffect(() => {
-    // Pedimos solo los planes de la categoría "Aventura"
-    fetch('http://localhost:5000/api/planes/categoria/Aventura')
+    // Consumimos los planes de la categoría Natural
+    fetch('${API_URL}/api/planes/categoria/Natural')
       .then(res => res.json())
       .then(data => setPlanes(data))
-      .catch(err => console.error("Error cargando planes:", err));
+      .catch(err => console.error("Error cargando planes naturales:", err));
   }, []);
 
   return (
     <main>
-      <h2 className="categoria-titulo">Planes de Aventura</h2>
-      
+      <h2 className="categoria-titulo">Planes Naturales</h2>
+
       <section className="planes-container">
         {planes.length > 0 ? (
           planes.map((plan) => (
@@ -28,19 +27,19 @@ const Aventura = () => {
               descripcion={plan.descripcion} 
               precio={plan.precio} 
               imagen={plan.imagen} 
-              onAgregar={agregarAlItinerario}
             />
           ))
         ) : (
-          <p className="text-center">Cargando planes de aventura...</p>
+          <p className="text-center">Conectando con la naturaleza...</p>
         )}
       </section>
 
       <div className="volver-inicio">
-        <a href="/" className="btn-volver">Volver al Inicio</a>
+        {/* Usamos Link para mantener la sesión activa sin recargar */}
+        <Link to="/" className="btn-volver">← Volver al Inicio</Link>
       </div>
     </main>
   );
 };
 
-export default Aventura;
+export default Natural;

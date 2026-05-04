@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2'; // 1. Importas la librería
-
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 export const useItinerario = () => {
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,7 @@ export const useItinerario = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/agregar-itinerario', {
+      const response = await fetch(`${API_URL}/api/users/agregar-itinerario`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, plan })

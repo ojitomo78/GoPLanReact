@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CardPlan from '../components/CardPlan';
 import { Link } from 'react-router-dom';
 import { useItinerario } from '../hooks/useItinerario';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Playa = () => {
   const [planes, setPlanes] = useState([]);
@@ -9,7 +10,7 @@ const Playa = () => {
 
   useEffect(() => {
     // Pedimos solo los planes de la categoría Playa
-    fetch('http://localhost:5000/api/planes/categoria/Playa')
+    fetch('${API_URL}/api/planes/categoria/Playa')
       .then(res => res.json())
       .then(data => setPlanes(data))
       .catch(err => console.error("Error cargando planes de playa:", err));

@@ -3,6 +3,8 @@ import CardPlan from '../components/CardPlan';
 import { Link } from 'react-router-dom';
 import { useItinerario } from '../hooks/useItinerario';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const TodosLosPlanes = () => {
   const [todosLosPlanes, setTodosLosPlanes] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -10,7 +12,7 @@ const TodosLosPlanes = () => {
 
   useEffect(() => {
     // Traemos la lista completa de planes desde el backend
-    fetch('http://localhost:5000/api/planes') // Asegúrate que esta ruta devuelva Plan.find()
+    fetch('${API_URL}/api/planes') // Asegúrate que esta ruta devuelva Plan.find()
       .then(res => res.json())
       .then(data => {
         setTodosLosPlanes(data);

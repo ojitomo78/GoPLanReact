@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2'; // 1. Importamos la librería
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Itinerarios = () => {
   const [misPlanes, setMisPlanes] = useState([]);
@@ -9,7 +10,7 @@ const Itinerarios = () => {
   const cargarItinerarios = () => {
     const email = localStorage.getItem('userEmail');
     if (email && email !== "null") {
-      fetch(`http://localhost:5000/api/users/mis-itinerarios/${email}`)
+      fetch(`${API_URL}/api/users/mis-itinerarios/${email}`)
         .then(res => res.json())
         .then(data => {
           setMisPlanes(data || []);
@@ -46,7 +47,7 @@ const Itinerarios = () => {
     // Si el usuario confirma, procedemos a borrar
     if (resultado.isConfirmed) {
       try {
-        const response = await fetch('http://localhost:5000/api/users/eliminar-itinerario', {
+        const response = await fetch('${API_URL}/api/users/eliminar-itinerario', {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, tituloPlan: titulo })

@@ -3,13 +3,15 @@ import CardPlan from '../components/CardPlan';
 import { Link } from 'react-router-dom';
 import { useItinerario } from '../hooks/useItinerario';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Romantico = () => {
   const [planes, setPlanes] = useState([]);
   const { agregarAlItinerario } = useItinerario();
 
   useEffect(() => {
     // Pedimos los planes de la categoría Romantico
-    fetch('http://localhost:5000/api/planes/categoria/Romantico')
+    fetch('${API_URL}/api/planes/categoria/Romantico')
       .then(res => res.json())
       .then(data => setPlanes(data))
       .catch(err => console.error("Error cargando planes románticos:", err));

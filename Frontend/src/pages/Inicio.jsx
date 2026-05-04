@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CardPlan from '../components/CardPlan';
 import { Link } from 'react-router-dom';
 import { useItinerario } from '../hooks/useItinerario';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Inicio = () => {
   const [destacados, setDestacados] = useState([]);
@@ -9,7 +10,7 @@ const Inicio = () => {
 
   useEffect(() => {
     // 1. Pedimos todos los planes al backend
-    fetch('http://localhost:5000/api/planes')
+    fetch('${API_URL}/api/planes')
       .then(res => res.json())
       .then(data => {
         // 2. Mezclamos el arreglo aleatoriamente
