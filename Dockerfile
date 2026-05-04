@@ -1,30 +1,29 @@
-# --- ETAPA 1: Construcción del Frontend ---
+# --- ETAPA 1: Frontend ---
 FROM node:20-slim AS build-frontend
 WORKDIR /app/frontend
+# Copiamos archivos de dependencias primero para aprovechar el cache
 COPY frontend/package*.json ./
 RUN npm install
+# Copiamos el resto del código del front
 COPY frontend/ ./
 RUN npm run build
 
-# --- ETAPA 2: Configuración del Backend ---
+# --- ETAPA 2: Backend ---
 FROM node:20-slim
 WORKDIR /app
 
-# Instalamos solo lo necesario para el backend
+# Copiamos dependencias del back
 COPY backend/package*.json ./backend/
 RUN cd backend && npm install --production
 
-# Copiamos el código del backend
+# Copiamos el código del back
 COPY backend/ ./backend/
 
-# Copiamos el Frontend ya construido a una carpeta que el Backend pueda servir
+# Traemos el build del front a la carpeta public del back
 COPY --from=build-frontend /app/frontend/dist ./backend/public
 
 WORKDIR /app/backend
-
-# Railway asigna el puerto automáticamente
 ENV PORT=5000
-EXPOSE ${PORT}
+EXPOSE 5000
 
-# Comando para iniciar tu servidor
 CMD ["node", "index.js"]
