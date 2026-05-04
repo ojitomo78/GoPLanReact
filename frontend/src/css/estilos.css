@@ -287,11 +287,13 @@ footer {
 }
 
 .categoria-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 25px;
-  padding: 40px;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap; /* Esto permite que las cajas bajen a la siguiente línea */
+  justify-content: center; /* Centra las cajas si sobran espacios */
+  gap: 20px; /* Separa las cajas para que no se peguen */
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .categoria-card {
