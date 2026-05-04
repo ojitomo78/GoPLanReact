@@ -10,7 +10,7 @@ const Inicio = () => {
 
   useEffect(() => {
     // 1. Pedimos todos los planes al backend
-    fetch('${API_URL}/api/planes')
+    fetch(`${API_URL}/api/planes`)
       .then(res => res.json())
       .then(data => {
         // 2. Mezclamos el arreglo aleatoriamente

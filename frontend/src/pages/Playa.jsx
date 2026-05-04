@@ -10,7 +10,7 @@ const Playa = () => {
 
   useEffect(() => {
     // Pedimos solo los planes de la categoría Playa
-    fetch('${API_URL}/api/planes/categoria/Playa')
+    fetch(`${API_URL}/api/planes/categoria/Playa`)
       .then(res => res.json())
       .then(data => setPlanes(data))
       .catch(err => console.error("Error cargando planes de playa:", err));

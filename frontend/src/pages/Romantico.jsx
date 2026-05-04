@@ -11,7 +11,7 @@ const Romantico = () => {
 
   useEffect(() => {
     // Pedimos los planes de la categoría Romantico
-    fetch('${API_URL}/api/planes/categoria/Romantico')
+    fetch(`${API_URL}/api/planes/categoria/Romantico`)
       .then(res => res.json())
       .then(data => setPlanes(data))
       .catch(err => console.error("Error cargando planes románticos:", err));

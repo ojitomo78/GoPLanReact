@@ -47,7 +47,7 @@ const Itinerarios = () => {
     // Si el usuario confirma, procedemos a borrar
     if (resultado.isConfirmed) {
       try {
-        const response = await fetch('${API_URL}/api/users/eliminar-itinerario', {
+        const response = await fetch(`${API_URL}/api/users/eliminar-itinerario`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, tituloPlan: titulo })

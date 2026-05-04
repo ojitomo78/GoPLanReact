@@ -10,7 +10,7 @@ const Cultural = () => {
 
   useEffect(() => {
     // Pedimos los planes filtrados por categoría Cultural
-    fetch('${API_URL}/api/planes/categoria/Cultural')
+    fetch(`${API_URL}/api/planes/categoria/Cultural`)
       .then(res => res.json())
       .then(data => setPlanes(data))
       .catch(err => console.error("Error cargando planes culturales:", err));

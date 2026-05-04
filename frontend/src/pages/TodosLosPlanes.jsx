@@ -12,7 +12,7 @@ const TodosLosPlanes = () => {
 
   useEffect(() => {
     // Traemos la lista completa de planes desde el backend
-    fetch('${API_URL}/api/planes') // Asegúrate que esta ruta devuelva Plan.find()
+    fetch(`${API_URL}/api/planes`) // Asegúrate que esta ruta devuelva Plan.find()
       .then(res => res.json())
       .then(data => {
         setTodosLosPlanes(data);

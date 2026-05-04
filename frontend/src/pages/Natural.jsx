@@ -8,7 +8,7 @@ const Natural = () => {
 
   useEffect(() => {
     // Consumimos los planes de la categoría Natural
-    fetch('${API_URL}/api/planes/categoria/Natural')
+    fetch(`${API_URL}/api/planes/categoria/Natural`)
       .then(res => res.json())
       .then(data => setPlanes(data))
       .catch(err => console.error("Error cargando planes naturales:", err));

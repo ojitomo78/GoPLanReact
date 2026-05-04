@@ -11,7 +11,7 @@ const Urbano = () => {
 
   useEffect(() => {
     // Pedimos los planes de la categoría Urbano
-    fetch('${API_URL}/api/planes/categoria/Urbano')
+    fetch(`${API_URL}/api/planes/categoria/Urbano`)
       .then(res => res.json())
       .then(data => setPlanes(data))
       .catch(err => console.error("Error cargando planes urbanos:", err));
