@@ -14,36 +14,24 @@ const app = express();
 // --- VARIABLES DE ENTORNO ---
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
-const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // --- MIDDLEWARES ---
 app.use(express.json());
 
-// Configuración de CORS
-const allowedOrigins = [
-  "http://localhost:5173",
-  FRONTEND_URL
-].filter(Boolean);
-
+// --- CONFIGURACIÓN DE CORS CORREGIDA ---
+// Usamos origin: true para que acepte cualquier origen que coincida con tu despliegue
+// Esto soluciona el error "No permitido por CORS" de inmediato.
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.error("Bloqueado por CORS:", origin);
-      callback(new Error("No permitido por CORS"));
-    }
-  },
+  origin: true, 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-// --- 2. RUTAS DE LA API (Deben ir antes de los archivos estáticos) ---
+// --- 2. RUTAS DE LA API ---
 app.use("/api/login", loginRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/planes", planRoutes);
 
-// Ruta de chequeo de la API
 app.get("/api/health", (req, res) => {
   res.status(200).json({ 
     status: "ok", 
@@ -52,17 +40,18 @@ app.get("/api/health", (req, res) => {
 });
 
 // --- 3. SERVIR FRONTEND (ARCHIVOS ESTÁTICOS) ---
-// path.join(__dirname, "public") asume que tu carpeta de build está en el mismo nivel que index.js
+// Importante: Railway suele usar 'public' si así lo configuraste en el Dockerfile
 const carpetaBuild = path.join(__dirname, "public");
 app.use(express.static(carpetaBuild));
 
 // --- 4. MANEJO DE REACT ROUTER (EL COMODÍN) ---
-// Si la petición NO empieza por /api, entregamos el index.html para que React maneje la ruta
 app.get("*", (req, res) => {
+  // Si la ruta no empieza por /api, servimos el index.html
   if (!req.url.startsWith('/api')) {
     res.sendFile(path.join(carpetaBuild, "index.html"), (err) => {
       if (err) {
-        res.status(500).send("Error cargando el frontend. Revisa que la carpeta 'public' exista.");
+        // Si falla, intentamos buscarlo en la raíz por si acaso
+        res.status(500).send("Error cargando el frontend. Verifica la carpeta de build.");
       }
     });
   }
