@@ -5,6 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Natural = () => {
   const [planes, setPlanes] = useState([]);
+  const { agregarAlItinerario } = useItinerario();
 
   useEffect(() => {
     // Consumimos los planes de la categoría Natural
@@ -27,6 +28,7 @@ const Natural = () => {
               descripcion={plan.descripcion} 
               precio={plan.precio} 
               imagen={plan.imagen} 
+              onAgregar={agregarAlItinerario}
             />
           ))
         ) : (
