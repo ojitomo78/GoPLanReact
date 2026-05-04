@@ -1,103 +1,84 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Añadimos useNavigate para redirigir tras registrarse
+import Swal from 'sweetalert2';
 
 const Registro = () => {
-  
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: '',
-    documento: '',
-    telefono: '',
     correo: '',
-    direccion: ''
+    password: ''
   });
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos del nuevo cliente:", formData);
-    alert(`¡Cliente ${formData.nombre} registrado con éxito!`);
+    try {
+      const response = await fetch('http://localhost:5000/api/users/registro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          email: formData.correo,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Mensaje de éxito que redirige al login al cerrar
+        Swal.fire({
+          title: '¡Cuenta creada!',
+          text: `Hola ${formData.nombre}, ya puedes iniciar sesión con tu correo.`,
+          icon: 'success',
+          confirmButtonText: 'Ir al Login',
+          confirmButtonColor: '#28a745'
+        }).then(() => {
+          navigate('/login'); // Redirigimos automáticamente para facilitar el flujo
+        });
+      } else {
+        Swal.fire({
+          title: 'No se pudo crear la cuenta',
+          text: data.error,
+          icon: 'error'
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Error de conexión',
+        text: 'Inténtalo de nuevo más tarde.',
+        icon: 'error'
+      });
+    }
   };
 
   return (
-    <main className="bg-light pb-5">
-      <div className="container mt-5">
-        <h2 className="mb-4 text-center categoria-titulo">Registrar Cliente</h2>
-
-        <form className="p-4 bg-white rounded shadow-sm mx-auto" style={{maxWidth: '600px'}} onSubmit={handleSubmit}>
+    <main>
+      <section className="form-section">
+        <h2 className="categoria-titulo">Registro de Usuario</h2>
+        <form className="form-login" onSubmit={handleSubmit}>
           
-          <div className="mb-3">
-            <label className="form-label fw-bold">Nombre:</label>
-            <input 
-              type="text" 
-              name="nombre"
-              className="form-control" 
-              value={formData.nombre}
-              onChange={handleChange}
-              required 
-            />
-          </div>
+          <label>Nombre:</label>
+          <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
 
-          <div className="mb-3">
-            <label className="form-label fw-bold">Documento:</label>
-            <input 
-              type="text" 
-              name="documento"
-              className="form-control" 
-              value={formData.documento}
-              onChange={handleChange}
-              required 
-            />
-          </div>
+          <label>Correo:</label>
+          <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
 
-          <div className="mb-3">
-            <label className="form-label fw-bold">Teléfono:</label>
-            <input 
-              type="text" 
-              name="telefono"
-              className="form-control" 
-              value={formData.telefono}
-              onChange={handleChange}
-              required 
-            />
-          </div>
+          <label>Contraseña:</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
 
-          <div className="mb-3">
-            <label className="form-label fw-bold">Correo:</label>
-            <input 
-              type="email" 
-              name="correo"
-              className="form-control" 
-              value={formData.correo}
-              onChange={handleChange}
-              required 
-            />
-          </div>
+          <button type="submit">Registrarse</button>
 
-          <div className="mb-3">
-            <label className="form-label fw-bold">Dirección:</label>
-            <input 
-              type="text" 
-              name="direccion"
-              className="form-control" 
-              value={formData.direccion}
-              onChange={handleChange}
-              required 
-            />
-          </div>
-
-          <button type="submit" className="btn btn-warning w-100 text-white fw-bold mt-3">
-            Registrar
-          </button>
-
+          <p className="login-options">
+            ¿Ya tienes una cuenta? 
+            <Link to="/login" className="btn-secundario">Inicia sesión</Link>
+          </p>
         </form>
-      </div>
+      </section>
     </main>
   );
 };

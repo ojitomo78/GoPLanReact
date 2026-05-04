@@ -1,44 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CardPlan from '../components/CardPlan';
+import { Link } from 'react-router-dom';
+import { useItinerario } from '../hooks/useItinerario';
 
 const Cultural = () => {
+  const [planes, setPlanes] = useState([]);
+  const { agregarAlItinerario } = useItinerario();
+
+  useEffect(() => {
+    // Pedimos los planes filtrados por categoría Cultural
+    fetch('http://localhost:5000/api/planes/categoria/Cultural')
+      .then(res => res.json())
+      .then(data => setPlanes(data))
+      .catch(err => console.error("Error cargando planes culturales:", err));
+  }, []);
+
   return (
     <main>
-      {}
       <h2 className="categoria-titulo">Planes Culturales</h2>
 
       <section className="planes-container">
-        <CardPlan 
-          titulo="Machu Picchu" 
-          descripcion="Explora una de las maravillas del mundo y descubre la historia del imperio inca." 
-          precio="$1.500.000" 
-          imagen="/image/planes/machu_picchu.png" 
-        />
-
-        <CardPlan 
-          titulo="Muralla China" 
-          descripcion="Recorre una de las construcciones más impresionantes de la historia." 
-          precio="$3.800.000" 
-          imagen="/image/planes/muralla_china.png" 
-        />
-
-        <CardPlan 
-          titulo="Kioto" 
-          descripcion="Templos históricos, cultura tradicional y paisajes únicos." 
-          precio="$4.200.000" 
-          imagen="/image/planes/kioto.png" 
-        />
-
-        <CardPlan 
-          titulo="Torre Eiffel" 
-          descripcion="Conoce París y visita uno de los monumentos más famosos del mundo." 
-          precio="$3.500.000" 
-          imagen="/image/planes/torre_eiffel.png" 
-        />
+        {planes.length > 0 ? (
+          planes.map((plan) => (
+            <CardPlan 
+              key={plan._id}
+              titulo={plan.titulo} 
+              descripcion={plan.descripcion} 
+              precio={plan.precio} 
+              imagen={plan.imagen} 
+              onAgregar={agregarAlItinerario}
+            />
+          ))
+        ) : (
+          <p className="text-center">Cargando la historia del mundo...</p>
+        )}
       </section>
 
       <div className="volver-inicio">
-        <a href="/" className="btn-volver">← Volver al Inicio</a>
+        <Link to="/" className="btn-volver">← Volver al Inicio</Link>
       </div>
     </main>
   );

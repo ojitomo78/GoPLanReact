@@ -1,20 +1,13 @@
 import React from 'react';
-import { motion } from 'framer-motion'; // 1. Importamos la librería
+import { motion } from 'framer-motion';
 
-const CardPlan = ({ titulo, descripcion, precio, imagen, categoria }) => {
-  // 2. Definimos las "variantes" de la animación
+const CardPlan = ({ titulo, descripcion, precio, imagen, categoria, onAgregar }) => {
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20 
-    },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut" 
-      }
+      transition: { duration: 0.5, ease: "easeOut" }
     }
   };
 
@@ -31,7 +24,6 @@ const CardPlan = ({ titulo, descripcion, precio, imagen, categoria }) => {
     >
       {imagen && <img src={imagen} alt={titulo} className="plan-img" />}
       
-      {}
       <motion.h2
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -48,8 +40,13 @@ const CardPlan = ({ titulo, descripcion, precio, imagen, categoria }) => {
       
       <p className="precio-tag"><strong>Precio base:</strong> {precio}</p>
 
-      <button className="btn-volver" style={{width: '100%', marginTop: '10px', border: 'none'}}>
-        Ver Detalles
+      {/* CORRECCIÓN: Botón para añadir al itinerario */}
+      <button 
+        className="btn-volver" 
+        style={{width: '100%', marginTop: '10px', border: 'none', cursor: 'pointer'}}
+        onClick={() => onAgregar({ titulo, precio, imagen })}
+      >
+        Añadir al Itinerario
       </button>
     </motion.div>
   );
